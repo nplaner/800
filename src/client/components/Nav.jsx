@@ -12,7 +12,7 @@ export default function Nav() {
 
   let welcome;
   if (activeUser) welcome = `Welcome, ${activeUser}`;
-  else welcome = "Welcome!";
+  else welcome = "Welcome";
 
   return (
     <div className="nav">
@@ -26,7 +26,7 @@ export default function Nav() {
         hide={() => dispatch(actions.setSignupModal(!signupStatus))}
         isLogin={false}
       />
-      <h1>{welcome}!</h1>
+      <h1>{welcome}</h1>
       <h1>800 Hex</h1>
       <div className="login-btn-container">
         <button

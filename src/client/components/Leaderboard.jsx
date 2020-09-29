@@ -8,7 +8,7 @@ function Leaderboard() {
   let leaderboard = useSelector((state) => state.leaderboard);
 
   useEffect(() => {
-    fetch('/leaderboard', { METHOD: 'GET' })
+      fetch('http://800hex.com/leaderboard', { method: 'GET', headers: {"Accept": "application/json", "Content-Type": "application/json" }})
       .then((res) => res.json())
       .then((res) => {
         dispatch(actions.updateLeaderboard(res));

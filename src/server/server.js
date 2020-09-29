@@ -16,6 +16,13 @@ app.use(cookieParser());
 
 // app.use('/build', express.static(path.join(__dirname, '../../build')));
 app.use(express.static(path.resolve(__dirname, '../assets')));
+app.use(function (req, res, next) {
+  if (req.headers['x-forwarded-proto'] === 'https') {
+    res.redirect('http://' + req.hostname + req.url);
+  } else {
+    next();
+  }
+});
 
 app.post(
   '/signup',
@@ -60,22 +67,22 @@ app.get(
   }
 );
 app.get('/leaderboard', scoreController.getLeaderboard, (req, res) => {
-  return res.status(200).json(res.locals.leaderboard);
+  return res.setHeader("Content-Type","application/json").status(200).json(res.locals.leaderboard);
 });
 
 // handle requests for static files
-if (process.env.NODE_env === 'production') {
+// if (process.env.NODE_env === 'production') {
   app.use('/build', express.static(path.resolve(__dirname, '../../build')));
 
-  app.get('/', (req, res) => {
+  app.get('*', (req, res) => {
     return res
       .status(200)
       .sendFile(path.resolve(__dirname, '../../index.html'));
   });
-}
-app.get('/', (req, res) => {
-  return res.status(200).sendFile(path.resolve(__dirname, '../../index.html'));
-});
+// }
+// app.get('/', (req, res) => {
+//   return res.status(200).sendFile(path.resolve(__dirname, '../../index.html'));
+// });
 
 // Error handling
 app.use('/', (req, res) => {
